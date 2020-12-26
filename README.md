@@ -17,4 +17,15 @@
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E5%8A%9F%E8%83%BD%E9%81%B8%E5%96%AE.PNG)
 
 1. 即時賽況:可以得到目前的賽況
-2. 
+2. 隊伍戰績:可進入選單內選擇美聯或國聯，即可獲取這兩個分區的隊伍排名以及目前的戰績
+3. fsm結構圖:可得到一張fsm的結構圖
+
+
+- 即時賽況
+當日無賽程
+![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%BD%E6%B3%81.PNG)
+當日有賽程
+![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E6%88%B0%E7%B8%BE1.PNG)
+![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%BD%E6%B3%812.PNG)
+
+
