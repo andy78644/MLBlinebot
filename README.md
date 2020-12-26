@@ -21,10 +21,10 @@
 3. fsm結構圖:可得到一張fsm的結構圖
 
 
-- 即時賽況\n
-當日無賽程\n
-![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%BD%E6%B3%81.PNG)\n
-當日有賽程\n
+- 即時賽況  
+當日無賽程  
+![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%BD%E6%B3%81.PNG)  
+當日有賽程  
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E6%88%B0%E7%B8%BE1.PNG)
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%BD%E6%B3%812.PNG)
 
