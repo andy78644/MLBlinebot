@@ -9,8 +9,8 @@
 
 ## 介紹
 名稱 : MLB_BOT
-![image]https://github.com/andy78644/MLBlinebot/blob/master/image/%E5%B0%81%E9%9D%A2.PNG
-![image]https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%87%E8%A8%8A.PNG
+![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E5%B0%81%E9%9D%A2.PNG)
+![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%87%E8%A8%8A.PNG)
 
 # 功能
 
