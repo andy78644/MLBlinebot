@@ -49,6 +49,9 @@ class TocMachine(GraphMachine):
         #self.line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
     def is_going_to_lobby(self, event):
         text = event.message.text
+        return True
+    def is_going_to_menu(self, event):
+        text = event.message.text
         return text == "lobby"
     def is_going_to_teamstats(self, event):
         text = event.message.text
@@ -79,12 +82,21 @@ class TocMachine(GraphMachine):
         message_to_reply = FlexSendMessage("開啟主選單", message)
         #line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
         print(line_bot_api)
+        line_bot_api.reply_message(reply_token, message_to_reply) 
+    def on_enter_menu(self, event):
+        #userid = event.source.user_id
+        #send_button_carousel(userid)
+        reply_token = event.reply_token
+        message = message_template.main_menu
+        message_to_reply = FlexSendMessage("開啟主選單", message)
+        #line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+        print(line_bot_api)
         line_bot_api.reply_message(reply_token, message_to_reply)
     def on_enter_show_fsm_pic(self, event):
         reply_token = event.reply_token
         message = message_template.show_pic
-        message["contents"][0]["hero"]["url"] = "https://i.imgur.com/irKr7hy.png" 
-        message["contents"][0]["footer"]["contents"][0]["action"]["uri"] = "https://i.imgur.com/irKr7hy.png"
+        message["contents"][0]["hero"]["url"] = "https://i.imgur.com/QhMf9TI.png"
+        message["contents"][0]["footer"]["contents"][0]["action"]["uri"] = "https://i.imgur.com/QhMf9TI.png"
         message_to_reply = FlexSendMessage("fsm結構圖", message)
         line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
         #print("abc")
@@ -163,6 +175,7 @@ class TocMachine(GraphMachine):
         #print(line_bot_api)
         line_bot_api.reply_message(reply_token, message_to_reply)
         #self.go_back()
+    '''
     def on_enter_national(self, event):
         reply_token = event.reply_token
         message = message_template.stats_message
@@ -171,11 +184,121 @@ class TocMachine(GraphMachine):
             "type": "text",
             "text":statsapi.standings(leagueId=104),
             "wrap" : True,
+            "size" : "sm",
         }
         message["body"]["contents"].append(stats)
+        message_to_reply = FlexSendMessage("戰績表", message)
+        line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+        line_bot_api.reply_message(reply_token, message_to_reply)
+    '''
+    def on_enter_national(self,event):
+        reply_token = event.reply_token
+        data = statsapi.standings_data(leagueId=104)
+        content = [
+            {
+                "type": "text",
+                "text": "戰績",
+                "weight": "bold",
+                "size": "lg",
+                "margin": "lg",
+                "align": "center"
+             },
+        ]
+        message = message_template.stats2_message
+        for i in data:
+            stats_head = {
+             "type": "text",
+             "text": data[i]['div_name'],
+            }
+            content.append(stats_head)
+            stats_body = {
+                "type": "box",
+                "layout": "horizontal",
+                "align" : "start",
+                "contents": [
+                ],
+                "paddingAll": "0px",
+            }
+            print(i)
+            key = []
+            for j in data[i]['teams'][0]:
+                key.append(j)
+            tmp = key[0]
+            key[0]=key[1]
+            key[1]=tmp
+            tmp = key[8]
+            key[8] = key[7]
+            key[7] = key[6]
+            key[6] = key[5]
+            key[5] = tmp
+            print(key)
+            for j in key:
+                flex = 1
+                align = "end"
+                index = {"div_rank":"rank","name":"team","w":"W","l":"L","gb":"GB","wc_rank":"WC_RANK","wc_gb":"WC_GB","elim_num":"(E)","wc_elim_num":"(E)"}
+                if j == "name":
+                    flex = 4
+                    align = "center"
+                if j == "wc_rank" or j == "wc_gb":
+                    flex = 2
+                if j == "team_id":
+                    continue
+                tmp = {
+                     "type": "box",
+                     "layout": "vertical",
+                     "contents": [
+                     ],
+                     "flex" : flex
+                }
+                tmp_data = {
+                    "type": "text",
+                    "text": index[j],
+                    "align" : align,
+                    "size": "sm",
+                    "flex": flex,
+                }
+                tmp["contents"].append(tmp_data)
+                for k in data[i]['teams']:
+                    tmp_data = {
+                        "type": "text",
+                        "text": str(k[j]),
+                        "align" : "end",
+                        "size": "sm",
+                        "flex": flex,
+                    }
+                    tmp["contents"].append(tmp_data)
+                    #print(type(k[j]))
+                stats_body["contents"].append(tmp)
+            
+            content.append(stats_body)
+        stats2 = {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "",
+                    "wrap": True,
+                  },
+                  {
+                    "type": "text",
+                    "text": "ab",
+
+                  },
+
+                ]
+              }
+            ]
+        }
+        message["body"]["contents"] = content
         message_to_reply = FlexSendMessage("戰績表", message) 
         line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
-        line_bot_api.reply_message(reply_token, message_to_reply) 
+        line_bot_api.reply_message(reply_token, message_to_reply)
+    '''
     def on_enter_amarican(self, event):
         reply_token = event.reply_token
         message = message_template.stats_message
@@ -184,12 +307,124 @@ class TocMachine(GraphMachine):
             "type": "text",
             "text":statsapi.standings(leagueId=103),
             "wrap" : True,
+            "size" : "sm",
         }
         message["body"]["contents"].append(stats)
+        
         message_to_reply = FlexSendMessage("戰績表", message) 
         line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
         line_bot_api.reply_message(reply_token, message_to_reply)
     '''
+    def on_enter_amarican(self,event):
+        reply_token = event.reply_token
+        data = statsapi.standings_data(leagueId=103)
+        content = [
+            {
+                "type": "text",
+                "text": "戰績",
+                "weight": "bold",
+                "size": "lg",
+                "margin": "lg",
+                "align": "center"
+             },
+        ]
+        message = message_template.stats2_message
+        for i in data:
+            stats_head = {
+             "type": "text",
+             "text": data[i]['div_name'],
+            }
+            content.append(stats_head)
+            stats_body = {
+                "type": "box",
+                "layout": "horizontal",
+                "align" : "start",
+                "contents": [
+                ],
+                "paddingAll": "0px",
+            }
+            print(i)
+            key = []
+            for j in data[i]['teams'][0]:
+                key.append(j)
+            tmp = key[0]
+            key[0]=key[1]
+            key[1]=tmp
+            tmp = key[8]
+            key[8] = key[7]
+            key[7] = key[6]
+            key[6] = key[5]
+            key[5] = tmp
+            print(key)
+            for j in key:
+                flex = 1
+                align = "end"
+                index = {"div_rank":"rank","name":"team","w":"W","l":"L","gb":"GB","wc_rank":"WC_RANK","wc_gb":"WC_GB","elim_num":"(E)","wc_elim_num":"(E)"}
+                if j == "name":
+                    flex = 4
+                    align = "center"
+                if j == "wc_rank" or j == "wc_gb":
+                    flex = 2
+                if j == "team_id":
+                    continue
+                tmp = {
+                     "type": "box",
+                     "layout": "vertical",
+                     "contents": [
+                     ],
+                     "flex" : flex
+                }
+                tmp_data = {
+                    "type": "text",
+                    "text": index[j],
+                    "align" : align,
+                    "size": "sm",
+                    "flex": flex,
+                }
+                tmp["contents"].append(tmp_data)
+                for k in data[i]['teams']:
+                    tmp_data = {
+                        "type": "text",
+                        "text": str(k[j]),
+                        "align" : "end",
+                        "size": "sm",
+                        "flex": flex,
+                    }
+                    tmp["contents"].append(tmp_data)
+                    #print(type(k[j]))
+                stats_body["contents"].append(tmp)
+            
+            content.append(stats_body)
+        stats2 = {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "",
+                    "wrap": True,
+                  },
+                  {
+                    "type": "text",
+                    "text": "ab",
+
+                  },
+
+                ]
+              }
+            ]
+        }
+        message["body"]["contents"] = content
+        message_to_reply = FlexSendMessage("戰績表", message) 
+        line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+        line_bot_api.reply_message(reply_token, message_to_reply)
+           
+    '''
+    
     def on_enter_searchplayer(self, event):
         print("I'm entering searchplayer")
         reply_token = event.reply_token

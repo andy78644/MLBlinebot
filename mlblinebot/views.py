@@ -177,17 +177,11 @@ def webhook_handler(request):
                 print(event.source.user_id)
                 machine[event.source.user_id] = TocMachine(
                     #states=["user", "testing", "searchplayer", "watchGame", "todayGame", "yesterGame", "showplayer", "lobby", "gameBoxscore", "showBoxscore", "searchteam", "showteam", "showstanding", "statleader", "showschedule", "showmeme", "shownews", "searchgame", "showsearchgame"],
-                    states=["user", "lobby", "teamstats", "todayGame", "leaguechoose", "national", "amarican", "show_fsm_pic"],
+                    states=["user", "lobby", "todayGame", "leaguechoose", "national", "amarican", "show_fsm_pic"],
                     transitions=[
                         {
                             "trigger": "advance",
                             "source": "user",
-                            "dest": "lobby",
-                            "conditions": "is_going_to_lobby",
-                        },
-                        {
-                            "trigger": "advance",
-                            "source": "lobby",
                             "dest": "lobby",
                             "conditions": "is_going_to_lobby",
                         },
@@ -213,13 +207,7 @@ def webhook_handler(request):
                             "trigger": "advance",
                             "source": "leaguechoose",
                             "dest": "lobby",
-                            "conditions": "is_going_to_lobby",
-                        },
-                        {
-                            "trigger": "advance",
-                            "source": "leaguechoose",
-                            "dest": "teamstats",
-                            "conditions": "is_going_to_teamstats",
+                            "conditions": "is_going_to_menu",
                         },
                         {
                             "trigger": "advance",
@@ -231,7 +219,7 @@ def webhook_handler(request):
                             "trigger": "advance",
                             "source": "national",
                             "dest": "lobby",
-                            "conditions": "is_going_to_lobby",
+                            "conditions": "is_going_to_menu",
                         },
                         {
                             "trigger": "advance",
@@ -243,15 +231,15 @@ def webhook_handler(request):
                             "trigger": "advance",
                             "source": "amarican",
                             "dest": "lobby",
-                            "conditions": "is_going_to_lobby",
+                            "conditions": "is_going_to_menu",
                         },
                         {
                             "trigger": "advance",
                             "source": ["todayGame"],
                             "dest": "lobby",
-                            "conditions": "is_going_to_lobby",
+                            "conditions": "is_going_to_menu",
                         },
-                        {"trigger": "go_back", "source": ["todayGame", "leaguechoose", "teamstats", "show_fsm_pic"], "dest": "user"},
+                        {"trigger": "go_back", "source": ["todayGame", "leaguechoose", "show_fsm_pic", "lobby"], "dest": "user"},
                     ],
                     initial="user",
                     auto_transitions=False,
@@ -280,7 +268,13 @@ def webhook_handler(request):
             print(response)
             print(machine[event.source.user_id].state)
             if response == False:
-                send_text_message(event.reply_token, "Invalid command, try again")
+                send_text_message(event.reply_token, "Invalid command, try againi\n請隨意輸入已回到主選單")
+                print(event.message.text)
+                machine[event.source.user_id].go_back()
+                print(machine[event.source.user_id].state) 
+                #send_text_message(event.reply_token, "請隨意輸入以回到主選單")
+                #response = machine[event.source.user_id].advance(event)
+                #print(response)
             print('dddddd')
         #return "OK"
         return HttpResponse()

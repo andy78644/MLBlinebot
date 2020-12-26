@@ -214,12 +214,51 @@ stats_message = {
     "contents": [
       {
         "type": "text",
-        "text": "功能介紹",
+        "text": "戰績",
         "weight": "bold",
         "size": "lg",
         "margin": "lg",
         "align": "center"
       },
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "style": "primary",
+        "action": {
+          "type": "message",
+          "label": "返回主選單",
+          "text": "lobby"
+        }
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "separator": True
+    }
+  }
+}
+stats2_message = {
+  "type": "bubble",
+  "size": "giga",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "戰績",
+        "weight": "bold",
+        "size": "lg",
+        "margin": "lg",
+        "align": "center"
+      },
+      
     ]
   },
   "footer": {
@@ -253,7 +292,7 @@ show_pic = {
       "size": "giga",
       "hero": {
         "type": "image",
-        "url": "https://i.imgur.com/bwXOyBi.png",
+        "url": "https://i.imgur.com/QhMf9TI.png",
         "aspectMode": "fit",
         "size": "full",
         "aspectRatio": "2:1"
@@ -267,7 +306,7 @@ show_pic = {
             "action": {
               "type": "uri",
               "label": "前往網頁看圖片",
-              "uri": "https://i.imgur.com/bwXOyBi.png"
+              "uri": "https://i.imgur.com/QhMf9TI.png"
             },
             "height": "md",
             "color": "#5cd65c",
@@ -290,3 +329,47 @@ show_pic = {
     }
   ]
 }
+
+'''
+{
+        "type": "text",
+        "text": "abc",
+        "weight": "bold",
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "",
+                "wrap": True,
+              },
+              {
+                "type": "text",
+                "text": "ab",
+       
+              },
+
+            ]
+          },
+          {
+            "type": "separator",
+            "color": "#ff0000"
+          },
+          {
+            "type": "text",
+            "text": "a\nb\nc\nd\ne",
+            "weight": "bold",
+            "size": "lg",
+            "margin": "lg",
+            "align": "center"
+          },
+            
+        ]
+      },
+'''
