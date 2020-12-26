@@ -10,6 +10,7 @@
 ## 介紹
 名稱 : MLB_BOT
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E5%B0%81%E9%9D%A2.PNG)
+
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%87%E8%A8%8A.PNG)
 
 
@@ -37,5 +38,13 @@
   
 - fsm結構圖  
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/fsm.PNG)
+
+
+- 錯誤訊息處理  
+![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E9%8C%AF%E8%AA%A4%E8%A8%8A%E6%81%AF.PNG)  
+
+
+
+
 
 
