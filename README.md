@@ -28,14 +28,14 @@
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E6%88%B0%E7%B8%BE1.PNG)
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E8%B3%BD%E6%B3%812.PNG)
 
-- 隊伍戰績
+- 隊伍戰績  
   - 選單  
   ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E9%81%B8%E6%93%87%E8%81%AF%E7%9B%9F.PNG)  
-  - 美聯 and 國聯
+  - 美聯 and 國聯  
   ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E5%9C%8B%E8%81%AF.PNG)
-  ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E7%BE%8E%E8%81%AF.PNG)
+  ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/%E7%BE%8E%E8%81%AF.PNG)  
   
-- fsm結構圖
+- fsm結構圖  
 ![image](https://github.com/andy78644/MLBlinebot/blob/master/image/fsm.PNG)
 
 
