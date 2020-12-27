@@ -55,10 +55,21 @@ class TocMachine(GraphMachine):
         return text == "lobby"
     def is_going_to_teamstats(self, event):
         text = event.message.text
-        return text.lower() == "戰績表"
+        return text.lower() == "戰績表" 
+    def is_going_to_dateGame(self, event):
+        text = event.message.text
+        return text.lower() == "日期選擇"
+    def is_going_to_GameChoose(self, event):
+        text = event.message.text
+        print(event.message.text)
+        return text == "比賽查詢"
     def is_going_to_leaguechoose(self, event):
         text =event.message.text
         return text.lower() == "選擇聯盟"
+    def is_going_to_datestats(self, event):
+        text = event.message.text
+        print("check")
+        return True
     def is_going_to_todayGame(self, event):
         text = event.message.text
         return text == "即時比數"
@@ -82,7 +93,7 @@ class TocMachine(GraphMachine):
         message_to_reply = FlexSendMessage("開啟主選單", message)
         #line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
         print(line_bot_api)
-        line_bot_api.reply_message(reply_token, message_to_reply) 
+        line_bot_api.reply_message(reply_token, message_to_reply)
     def on_enter_menu(self, event):
         #userid = event.source.user_id
         #send_button_carousel(userid)
@@ -92,11 +103,40 @@ class TocMachine(GraphMachine):
         #line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
         print(line_bot_api)
         line_bot_api.reply_message(reply_token, message_to_reply)
+    '''
+    def on_enter_gamechoose(self, event):
+        #userid = event.source.user_id
+        #send_button_carousel(userid)
+        reply_token = event.reply_token
+        message = message_template.main_menu
+        message_to_reply = FlexSendMessage("開啟主選單", message)
+        #line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+        print(line_bot_api)
+        line_bot_api.reply_message(reply_token, message_to_reply)
+    '''
+    def on_enter_GameChoose(self, event):
+        print("hello4")
+        reply_token = event.reply_token
+        message = message_template.game_menu
+        print("hello")
+        message_to_reply = FlexSendMessage("選擇賽況", message)
+        #line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+        print(line_bot_api)
+        line_bot_api.reply_message(reply_token, message_to_reply)
+    def on_enter_dateGame(self, event):
+        #userid = event.source.user_id
+        #send_button_carousel(userid)
+        print("hello3")
+        reply_token = event.reply_token
+        message_to_reply = send_text_message(event.reply_token, "請輸入日期(ex:09/30/2020)")
+        #line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+        #print(line_bot_api)
+        #line_bot_api.reply_message(reply_token, message_to_reply)
     def on_enter_show_fsm_pic(self, event):
         reply_token = event.reply_token
         message = message_template.show_pic
-        message["contents"][0]["hero"]["url"] = "https://i.imgur.com/QhMf9TI.png"
-        message["contents"][0]["footer"]["contents"][0]["action"]["uri"] = "https://i.imgur.com/QhMf9TI.png"
+        message["contents"][0]["hero"]["url"] = "https://i.imgur.com/sDT8I14.png"
+        message["contents"][0]["footer"]["contents"][0]["action"]["uri"] = "https://i.imgur.com/sDT8I14.png"
         message_to_reply = FlexSendMessage("fsm結構圖", message)
         line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
         #print("abc")
@@ -115,6 +155,46 @@ class TocMachine(GraphMachine):
         message_to_reply = FlexSendMessage("戰績表", message)
         line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
         line_bot_api.reply_message(reply_token, message_to_reply)
+    def on_enter_datestats(self, event):
+        print("I'm entering todayGame")
+        reply_token = event.reply_token
+        set_date = event.message.text
+        games = statsapi.schedule(date = set_date)
+        #games = statsapi.schedule()
+        message = []
+        #for game in games:
+        #    message.append(game)
+        #value_now =
+        print(message)
+        message = message_template.now_table
+        print(games)
+        message["body"]["contents"][0]["contents"][0]["contents"][0]["text"] = set_date+"賽程"
+        if games==[]:
+            #print(message["body"]["contents"][0]["contents"][0]["contents"])
+            if(len(message["body"]["contents"][0]["contents"][0]["contents"])==1):
+                data = {
+                    "type": "text",
+                    "text": f"本日無比賽",
+                    "wrap": True,
+                }
+                message["body"]["contents"][0]["contents"][0]["contents"].append(data)
+        for game in games:
+            home = game['home_name']
+            away = game['away_name']
+            home_score = game['home_score']
+            away_score = game['away_score']
+            data = {
+                "type": "text",
+                "text": f"{home}({home_score}) vs\n{away}({away_score})\n",
+                "wrap": True,
+            }
+            message["body"]["contents"][0]["contents"][0]["contents"].append(data)
+        message_to_reply = FlexSendMessage("賽程", message)
+        line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+        print("abc")
+        line_bot_api.reply_message(reply_token, message_to_reply)
+        print("ggggggggggg")
+        self.go_back()
     def on_enter_todayGame(self, event):
         print("I'm entering todayGame")
         reply_token = event.reply_token

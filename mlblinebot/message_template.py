@@ -19,8 +19,8 @@ main_menu = {
             "type": "button",
             "action": {
               "type": "message",
-              "label": "即時比數",
-              "text": "即時比數"
+              "label": "比賽查詢",
+              "text": "比賽查詢"
             },
             "height": "md",
             "color": "#ff9900",
@@ -204,6 +204,67 @@ league_menu = {
   ]
 }
 
+game_menu = {
+  "type": "carousel",
+  "contents": [
+    {
+      "type": "bubble",
+      "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "賽況",
+            "weight": "bold",
+            "align": "center",
+            "size": "lg"
+          }
+        ]
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "即時比數",
+              "text": "即時比數"
+            },
+            "height": "md",
+            "color": "#00ff80",
+            "style": "primary"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "日期選擇",
+              "text": "日期選擇"
+            },
+            "height": "md",
+            "color": "#00cc66",
+            "style": "primary"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "返回主選單",
+              "text": "lobby"
+            },
+            "height": "md",
+            "color": "#00994d",
+            "style": "primary"
+          }
+        ],
+        "spacing": "lg"
+      }
+    }
+  ]
+}
 
 stats_message = {
   "type": "bubble",

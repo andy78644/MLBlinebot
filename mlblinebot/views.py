@@ -11,7 +11,7 @@ from linebot.models import *
 import statsapi
 from mlblinebot.fsm import TocMachine
 from mlblinebot.utils import send_text_message, send_image_url
-
+import time
 from PIL import Image
 import PIL
 
@@ -104,7 +104,6 @@ def handle_message(event, get_name):
         )
     return
 
-
 machine = {}
 '''
 @app.route("/callback", methods=["POST"])
@@ -177,7 +176,7 @@ def webhook_handler(request):
                 print(event.source.user_id)
                 machine[event.source.user_id] = TocMachine(
                     #states=["user", "testing", "searchplayer", "watchGame", "todayGame", "yesterGame", "showplayer", "lobby", "gameBoxscore", "showBoxscore", "searchteam", "showteam", "showstanding", "statleader", "showschedule", "showmeme", "shownews", "searchgame", "showsearchgame"],
-                    states=["user", "lobby", "todayGame", "leaguechoose", "national", "amarican", "show_fsm_pic"],
+                    states=["user", "lobby", "GameChoose","dateGame", "datestats","todayGame", "leaguechoose", "national", "amarican", "show_fsm_pic"],
                     transitions=[
                         {
                             "trigger": "advance",
@@ -194,8 +193,44 @@ def webhook_handler(request):
                         {
                             "trigger": "advance",
                             "source": "lobby",
+                            "dest": "GameChoose",
+                            "conditions": "is_going_to_GameChoose",
+                        },
+                        {
+                            "trigger": "advance",
+                            "source": "GameChoose",
+                            "dest": "lobby",
+                            "conditions": "is_going_to_menu",
+                        },
+                        {
+                            "trigger": "advance",
+                            "source": "GameChoose",
                             "dest": "todayGame",
                             "conditions": "is_going_to_todayGame",
+                        },
+                        {
+                            "trigger": "advance",
+                            "source": "GameChoose",
+                            "dest": "dateGame",
+                            "conditions": "is_going_to_dateGame",
+                        },
+                        {
+                            "trigger": "advance",
+                            "source": "dateGame",
+                            "dest": "lobby",
+                            "conditions": "is_going_to_menu",
+                        },
+                        {
+                            "trigger": "advance",
+                            "source": "dateGame",
+                            "dest": "datestats",
+                            "conditions": "is_going_to_datestats",
+                        },
+                        {
+                            "trigger": "advance",
+                            "source": "datestats",
+                            "dest": "lobby",
+                            "conditions": "is_going_to_menu",
                         },
                         {
                             "trigger": "advance",
@@ -239,19 +274,27 @@ def webhook_handler(request):
                             "dest": "lobby",
                             "conditions": "is_going_to_menu",
                         },
-                        {"trigger": "go_back", "source": ["todayGame", "leaguechoose", "show_fsm_pic", "lobby"], "dest": "user"},
+                        {"trigger": "go_back", "source": ["datestats", "todayGame", "leaguechoose", "show_fsm_pic", "lobby", "dateGame","GameChoose"], "dest": "user"},
                     ],
                     initial="user",
                     auto_transitions=False,
                     show_conditions=True,
                     )
-            
+            #print("hello")
+            #print(isValidDate("9/30/2020"))
+            #print("hello")
             if not isinstance(event, MessageEvent):
                 continue
             if not isinstance(event.message, TextMessage):
                 continue
             if not isinstance(event.message.text, str):
                 continue
+            if machine[event.source.user_id].state == 'dateGame':
+                res = isValidDate(event.message.text)
+                if res == False:
+                    send_text_message(event.reply_token, "請輸入正確日期格式(mm/dd/yyyy)")
+                    print("請輸入正確的日期格式(mm/dd/yyyy)")
+                    continue
             # print(f"\nFSM STATE: {machine.state}")
             # print(f"REQUEST BODY: \n{body}")
             #print(event)
@@ -263,7 +306,8 @@ def webhook_handler(request):
                 #except:
                 #    response = machine[event.source.user_id].advance(event, link)
                 #print("dfe")
-                #print(machine[event.source.user_id].state)
+                #print(machine[event.source.user_id].state) 
+            print(machine[event.source.user_id].state)
             response = machine[event.source.user_id].advance(event)
             print(response)
             print(machine[event.source.user_id].state)
@@ -271,7 +315,7 @@ def webhook_handler(request):
                 send_text_message(event.reply_token, "Invalid command, try againi\n請隨意輸入已回到主選單")
                 print(event.message.text)
                 machine[event.source.user_id].go_back()
-                print(machine[event.source.user_id].state) 
+                print(machine[event.source.user_id].state)
                 #send_text_message(event.reply_token, "請隨意輸入以回到主選單")
                 #response = machine[event.source.user_id].advance(event)
                 #print(response)
@@ -294,4 +338,11 @@ def show_fsm(event):
      #url = settings.STATIC_ROOT+'/image'
      #im1 = Image.open("image/")
      #im1 = im1.save("fsm.png")
+def isValidDate(date):
+    try:
+        print(date)
+        print(time.strptime(date, "%m/%d/%Y"))
+        return True
+    except:
+        return False
 
