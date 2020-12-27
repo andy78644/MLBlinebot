@@ -168,6 +168,18 @@ class TocMachine(GraphMachine):
         print(message)
         message = message_template.now_table
         print(games)
+        if(len(message["body"]["contents"][0]["contents"][0]["contents"])!=1):
+            message["body"]["contents"][0]["contents"][0]["contents"] = []
+            data = {
+                "type": "text",
+                "text": "今日賽程\n",
+                "size": "lg",
+                "margin": "lg",
+                "color": "#555555",
+                "align": "center",
+                "wrap": True,
+            }
+            message["body"]["contents"][0]["contents"][0]["contents"].append(data)
         message["body"]["contents"][0]["contents"][0]["contents"][0]["text"] = set_date+"賽程"
         if games==[]:
             #print(message["body"]["contents"][0]["contents"][0]["contents"])
@@ -207,6 +219,19 @@ class TocMachine(GraphMachine):
         print(message)
         message = message_template.now_table
         print(games)
+
+        if(len(message["body"]["contents"][0]["contents"][0]["contents"])!=1):
+            message["body"]["contents"][0]["contents"][0]["contents"] = []
+            data = {
+                "type": "text",
+                "text": "今日賽程\n",
+                "size": "lg",
+                "margin": "lg",
+                "color": "#555555",
+                "align": "center",
+                "wrap": True,
+            }
+            message["body"]["contents"][0]["contents"][0]["contents"].append(data)
         if games==[]:
             #print(message["body"]["contents"][0]["contents"][0]["contents"])
             if(len(message["body"]["contents"][0]["contents"][0]["contents"])==1):
@@ -215,6 +240,9 @@ class TocMachine(GraphMachine):
                     "text": f"今日無比賽",
                     "wrap": True,
                 }
+                message["body"]["contents"][0]["contents"][0]["contents"].append(data)
+            else:
+                message["body"]["contents"][0]["contents"][0]["contents"] = []
                 message["body"]["contents"][0]["contents"][0]["contents"].append(data)
         for game in games:
             home = game['home_name']
